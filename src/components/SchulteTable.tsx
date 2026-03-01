@@ -81,14 +81,14 @@ export default function SchulteTable({ size = 5 }: { size?: number }) {
 
       if (startTime === null) setStartTime(Date.now());
 
+      setNextTarget((n) => n + 1);
+
       if (value === totalCells) {
         const ms = Date.now() - (startTime ?? Date.now());
         setCompleted(true);
         setElapsedMs(ms);
         saveTime(ms);
         setTimes((prev) => [...prev, ms]);
-      } else {
-        setNextTarget((n) => n + 1);
       }
     },
     [nextTarget, completed, totalCells, startTime]
@@ -155,8 +155,9 @@ export default function SchulteTable({ size = 5 }: { size?: number }) {
             {cells.map((value, index) => (
               <button
                 key={`${index}-${value}`}
+                type="button"
                 onClick={() => handleCellClick(value)}
-                disabled={completed || value < nextTarget}
+                disabled={completed || value !== nextTarget}
                 className={`
                   aspect-square flex items-center justify-center rounded-md
                   text-sm font-semibold transition-all duration-150
